@@ -13,7 +13,7 @@
           <el-input
             v-model="listQuery.keyword"
             class="input-width"
-            placeholder="角色名称"
+            placeholder="用户名称"
             clearable
           ></el-input>
         </el-form-item>
@@ -148,7 +148,7 @@ import addUser from "./components/addUser.vue"; //添加用户
 import assignRoles from "./components/assignRoles.vue";
 import allocationQuota from "./components/allocationQuota.vue";
 const defaultListQuery = {
-  keyword: 1,
+  keyword: null,
   pageNum: 1,
   pageSize: 5
 };
@@ -207,11 +207,12 @@ export default {
         type: "warning"
       })
         .then(() => {
-          updateStatus(row.id, { actite: row.status }).then(response => {
+          updateStatus(row.id, { actite: row.active }).then(response => {
             this.$message({
               type: "success",
               message: "修改成功!"
             });
+            // this.getList();
           });
         })
         .catch(() => {
@@ -219,7 +220,7 @@ export default {
             type: "info",
             message: "取消修改"
           });
-          this.getList();
+          // this.getList();
         });
     },
     // 分配配额
@@ -265,8 +266,9 @@ export default {
     handleResetSearch() {
       this.listQuery = Object.assign({}, defaultListQuery);
     },
-
-    handleSearchList() {
+    //查询搜索
+    handleSearchList(data) {
+      console.log("查询搜索", data);
       this.listQuery.pageNum = 1;
       this.getList();
     },
