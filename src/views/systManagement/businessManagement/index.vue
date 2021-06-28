@@ -67,15 +67,10 @@
           ></el-image>
           <!-- </template> -->
         </el-table-column>
-        <el-table-column label="系统展示名称">
-          <template slot-scope="scope">{{ scope.row.description }}</template>
+        <el-table-column label="系统展示名称" prop="systemName">
         </el-table-column>
-        <el-table-column label="节点限额">
-          <template slot-scope="scope">{{ scope.row.description }}</template>
-        </el-table-column>
-        <el-table-column label="应用限额">
-          <template slot-scope="scope">{{ scope.row.description }}</template>
-        </el-table-column>
+        <el-table-column label="节点限额" prop="nodeQuota"> </el-table-column>
+        <el-table-column label="应用限额" prop="appliLimit"> </el-table-column>
         <el-table-column label="创建时间" width="200px">
           <template slot-scope="scope">{{
             scope.row.createTime | formatDateTime
@@ -160,7 +155,9 @@ export default {
         {
           id: 1,
           name: "zs",
-          description: "是张三吗？",
+          systemName: "zs",
+          nodeQuota: 13,
+          appliLimit: 15,
           createTime: "2021-06-23",
           logo: "./assets/2.jpg"
         }
