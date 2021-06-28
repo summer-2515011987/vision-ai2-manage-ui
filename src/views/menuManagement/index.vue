@@ -1,7 +1,10 @@
 <template>
   <div class="menuManagement">
-    <createBtn titleText="菜单管理" />
+    <!-- <createBtn titleText="菜单管理111" /> -->
     <el-card class="menuCard">
+      <div slot="header" class="main_contain">
+        <span class="el-icon-caret-right"></span>菜单管理
+      </div>
       <el-container>
         <el-aside width="200px">
           <span class="preview">效果预览</span>
@@ -107,12 +110,12 @@
 </template>
 
 <script>
-import createBtn from "@/components/createBtn";
+// import createBtn from "@/components/createBtn";
 import MenuTree from "./components/menuTree/menuTree";
 export default {
   name: "menuManagement",
   components: {
-    createBtn,
+    // createBtn,
     MenuTree
   },
   props: {},
@@ -682,7 +685,6 @@ export default {
 
 <style scoped lang="less">
 .menuCard {
-  margin-top: 20px;
   height: 400px;
 }
 .preview {

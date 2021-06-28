@@ -31,3 +31,9 @@ body {
   padding-right: 0px;
   overflow: hidden;
 }
+
+.main_contain span {
+  transform: rotate(45deg);
+  color: #ce4f15;
+  font-size: 20px;
+}

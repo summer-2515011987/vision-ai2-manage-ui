@@ -1,7 +1,9 @@
 <template>
   <div class="userManagement">
-    <createBtn titleText="用户管理111" />
     <el-card class="userCard">
+      <div slot="header" class="main_contain">
+        <span class="el-icon-caret-right"></span>用户管理
+      </div>
       <!-- 表单项 -->
       <el-form
         :inline="true"
@@ -143,19 +145,17 @@ import {
   getUserList,
   updateStatus
 } from "@/api/systManagement/userManagement.js";
-import createBtn from "@/components/createBtn";
 import addUser from "./components/addUser.vue"; //添加用户
 import assignRoles from "./components/assignRoles.vue";
 import allocationQuota from "./components/allocationQuota.vue";
 const defaultListQuery = {
-  keyword: null,
+  keyword: "",
   pageNum: 1,
   pageSize: 5
 };
 export default {
   name: "userManagement",
   components: {
-    createBtn,
     addUser,
     assignRoles,
     allocationQuota
@@ -207,7 +207,15 @@ export default {
         type: "warning"
       })
         .then(() => {
-          updateStatus(row.id, { actite: row.active }).then(response => {
+          let data = {
+            actite: row.active,
+            id: row.id
+          };
+          // let params = {
+          //   actite: row.active,
+          //   id: row.id
+          // };
+          updateStatus(data).then(response => {
             this.$message({
               type: "success",
               message: "修改成功!"
@@ -294,7 +302,7 @@ export default {
 .tableList {
   margin-top: 10px;
 }
-.userCard {
-  margin-top: 20px;
-}
+// .userCard {
+//   margin-top: 20px;
+// }
 </style>

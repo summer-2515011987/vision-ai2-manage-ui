@@ -1,9 +1,8 @@
 <template>
   <div class="roleManagement">
-    <!-- <createBtn titleText="企业管理" /> -->
     <el-card class="roleCard">
       <div slot="header" class="main_contain">
-        <span class="el-icon-caret-right"></span>企业管理
+        <span class="el-icon-caret-right"></span>企业管理111
       </div>
       <div class="numberNode">
         <span class="el-icon-help"></span>
@@ -60,8 +59,13 @@
         <el-table-column label="企业名称">
           <template slot-scope="scope">{{ scope.row.name }}</template>
         </el-table-column>
-        <el-table-column label="logo">
-          <template slot-scope="scope">{{ scope.row.description }}</template>
+        <el-table-column label="Logo" prop="logo">
+          <!-- <template slot-scope="scope"> -->
+          <el-image
+            class="table-td-thumb"
+            :src="require('./assets/2.jpg')"
+          ></el-image>
+          <!-- </template> -->
         </el-table-column>
         <el-table-column label="系统展示名称">
           <template slot-scope="scope">{{ scope.row.description }}</template>
@@ -72,7 +76,7 @@
         <el-table-column label="应用限额">
           <template slot-scope="scope">{{ scope.row.description }}</template>
         </el-table-column>
-        <el-table-column label="创建时间">
+        <el-table-column label="创建时间" width="200px">
           <template slot-scope="scope">{{
             scope.row.createTime | formatDateTime
           }}</template>
@@ -89,7 +93,7 @@
             </el-switch>
           </template>
         </el-table-column> -->
-        <el-table-column label="操作" width="400px">
+        <el-table-column label="操作" width="300px">
           <template slot-scope="scope">
             <el-link size="mini" @click="handleEdit(scope.row)" type="primary"
               >详情
@@ -133,7 +137,6 @@
 </template>
 
 <script>
-// import createBtn from "@/components/createBtn";
 import { formatDate } from "@/utils/date";
 import AddEnterprise from "./components/AddEnterprise.vue";
 const defaultListQuery = {
@@ -144,7 +147,6 @@ const defaultListQuery = {
 export default {
   name: "roleManagement",
   components: {
-    // createBtn,
     AddEnterprise
   },
   data() {
@@ -159,7 +161,8 @@ export default {
           id: 1,
           name: "zs",
           description: "是张三吗？",
-          createTime: "2021-06-23"
+          createTime: "2021-06-23",
+          logo: "./assets/2.jpg"
         }
       ]
     };
@@ -225,9 +228,11 @@ export default {
     // 编辑新企业
     editItem(data) {
       console.log("编辑新企业", data);
-      this.$router.push(`/home/createEnterprise`);
-      // this.detail = JSON.parse(JSON.stringify(data));
-      // this.detailState = true;
+      // this.$router.push(`/home/editEnterprise`);
+      this.$router.push({
+        path: "/home/editEnterprise",
+        query: { id: data.id }
+      });
     },
     getList() {
       console.log("获取列表数据");
@@ -298,10 +303,5 @@ export default {
 }
 .searchBtn /deep/.el-form--inline .el-form-item__content {
   margin-right: 20px;
-}
-.main_contain span {
-  transform: rotate(45deg);
-  color: #ce4f15;
-  font-size: 20px;
 }
 </style>

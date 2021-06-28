@@ -1,7 +1,9 @@
 <template>
   <div class="roleManagement">
-    <createBtn titleText="角色管理" />
     <el-card class="roleCard">
+      <div slot="header" class="main_contain">
+        <span class="el-icon-caret-right"></span>角色管理
+      </div>
       <el-form
         :inline="true"
         :model="listQuery"
@@ -107,7 +109,6 @@
 </template>
 
 <script>
-import createBtn from "@/components/createBtn";
 import { formatDate } from "@/utils/date";
 import roleEdit from "./components/roleEdit.vue";
 const defaultListQuery = {
@@ -118,7 +119,6 @@ const defaultListQuery = {
 export default {
   name: "roleManagement",
   components: {
-    createBtn,
     roleEdit
   },
   data() {
@@ -238,9 +238,6 @@ export default {
 </script>
 
 <style scoped lang="less">
-.roleCard {
-  margin-top: 20px;
-}
 .addBtn {
   float: right;
 }

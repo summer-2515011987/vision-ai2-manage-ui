@@ -11,25 +11,33 @@ let BASEPATH = "/VideoPlatform";
 //     });
 // }
 export function getUserList(data) {
-    return request({
-        url: BASEPATH + "/userManager/list/",
-        method: "post",
-        data: data
-    });
+  return request({
+    url: BASEPATH + "/userManager/list/",
+    method: "post",
+    data: data
+  });
 }
 // 启用禁用
-export function updateStatus(id, params) {
-    return request({
-        url: BASEPATH + "/userManager/updateStatus/" + id,
-        method: "post",
-        params: params
-    });
+// export function updateStatus(params) {
+//   return request({
+//     url: BASEPATH + "/userManager/updateStatus",
+//     method: "get",
+//     params: params
+//   });
+// }
+
+export function updateStatus(data) {
+  return request({
+    url: BASEPATH + "/userManager/updateStatus",
+    method: "post",
+    data: data
+  });
 }
 // 根据用户名获取通用用户信息
 export function getUsername(params) {
-    return request({
-        url: BASEPATH + "/userManager/loadByUsername",
-        method: "get",
-        params: params
-    });
+  return request({
+    url: BASEPATH + "/userManager/loadByUsername",
+    method: "get",
+    params: params
+  });
 }

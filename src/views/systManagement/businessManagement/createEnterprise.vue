@@ -1,14 +1,19 @@
 <template>
-  <div class="createEnterprise">创建新企业</div>
+  <enterprise-detail :title="title"></enterprise-detail>
 </template>
 
 <script>
+import enterpriseDetail from "./components/enterpriseDetail.vue";
 export default {
   name: "createEnterprise",
-  components: {},
+  components: {
+    enterpriseDetail
+  },
   props: {},
   data() {
-    return {};
+    return {
+      title: "创建"
+    };
   },
   computed: {},
   watch: {},
