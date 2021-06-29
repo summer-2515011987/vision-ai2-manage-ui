@@ -22,16 +22,16 @@
         <el-form-item>
           <el-button
             type="primary"
-            @click="handleSearchList()"
+            @click="handleSearchList(listQuery.keyword)"
             class="searchBtn"
             >查询搜索</el-button
           >
-          <el-button
+          <!-- <el-button
             type="primary"
             @click="handleResetSearch()"
             class="searchBtn"
             >重置</el-button
-          >
+          > -->
         </el-form-item>
         <el-button type="primary" @click="handleAdd({})" class="addBtn"
           >添加</el-button
@@ -126,6 +126,7 @@
       :visible="detailState"
       :detail="detail"
       @cancel="detailState = false"
+      @success="getList()"
     ></addUser>
     <assignRoles
       :roleVisible="roleVisible"
@@ -143,7 +144,9 @@
 // 导入删除接口（以下接口仅为模拟，需根据实际状况导入)
 import {
   getUserList,
-  updateStatus
+  updateStatus,
+  getUsername,
+  deleteUser
 } from "@/api/systManagement/userManagement.js";
 import addUser from "./components/addUser.vue"; //添加用户
 import assignRoles from "./components/assignRoles.vue";
@@ -189,13 +192,13 @@ export default {
   methods: {
     // 查询列表
     getList() {
-      console.log("this.listQuery", this.listQuery);
       this.listLoading = true;
       getUserList(this.listQuery).then(response => {
-        console.log("获取列表数据", response);
-        this.listLoading = false;
-        this.list = response.data.content;
-        // this.total = response.data.total;
+        if (response.code == 200) {
+          this.listLoading = false;
+          this.list = response.data.content;
+          // this.total = response.data.total;
+        }
       });
     },
     // 是否启用
@@ -208,7 +211,7 @@ export default {
       })
         .then(() => {
           let data = {
-            actite: row.active,
+            active: row.active,
             id: row.id
           };
           // let params = {
@@ -220,7 +223,6 @@ export default {
               type: "success",
               message: "修改成功!"
             });
-            // this.getList();
           });
         })
         .catch(() => {
@@ -228,7 +230,6 @@ export default {
             type: "info",
             message: "取消修改"
           });
-          // this.getList();
         });
     },
     // 分配配额
@@ -237,7 +238,6 @@ export default {
     },
     // 分配角色
     assignRoles() {
-      console.log("111");
       this.roleVisible = true;
     },
     // 删除用户
@@ -246,39 +246,49 @@ export default {
       // let params = {
       //   id: data.id
       // };
-      // this.$confirm(`确定要删除模块【${data.name}】吗？`, "删除系统应用模块", {
-      //   confirmButtonText: "确定",
-      //   cancelButtonText: "取消",
-      //   type: "warning"
-      // }).then(() => {
-      //   delApplicationModule(params)
-      //     .then(res => {
-      //       let data = res.data;
-      //       if (data.resultCode === 200) {
-      //         this.$message.success(data.data);
-      //         this.changePage(1);
-      //       } else {
-      //         this.$message.error(`删除失败`);
-      //       }
-      //     })
-      //     .catch(err => {
-      //       this.$message.error(err.response.data.msg);
-      //     });
-      // });
+      this.$confirm(
+        `确定要删除模块【${data.username}】吗？`,
+        "删除系统应用模块",
+        {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        }
+      ).then(() => {
+        deleteUser(data.id, data)
+          .then(res => {
+            console.log("删除当前信息", res);
+            if (res.code === 200) {
+              this.$message.success("删除成功");
+              this.getList();
+            } else {
+              this.$message.error(`删除失败`);
+            }
+          })
+          .catch(err => {
+            this.$message.error(err.response.data.msg);
+          });
+      });
     },
     //添加编辑用户
     handleAdd(data) {
       this.detail = JSON.parse(JSON.stringify(data));
       this.detailState = true;
     },
-    handleResetSearch() {
-      this.listQuery = Object.assign({}, defaultListQuery);
-    },
+    // handleResetSearch() {
+    //   this.listQuery = Object.assign({}, defaultListQuery);
+    // },
     //查询搜索
-    handleSearchList(data) {
-      console.log("查询搜索", data);
-      this.listQuery.pageNum = 1;
-      this.getList();
+    handleSearchList(row) {
+      this.listLoading = true;
+      getUsername({ username: row })
+        .then(res => {
+          if (res.code == 200) {
+            this.listLoading = false;
+            this.list = res.data;
+          }
+        })
+        .catch(err => console.log(err));
     },
     handleSizeChange(val) {
       console.log("handleSizeChange");

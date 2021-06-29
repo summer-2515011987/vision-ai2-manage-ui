@@ -56,9 +56,7 @@
         border
         height="250"
       >
-        <el-table-column label="企业名称">
-          <template slot-scope="scope">{{ scope.row.name }}</template>
-        </el-table-column>
+        <el-table-column label="企业名称" prop="name"> </el-table-column>
         <el-table-column label="Logo" prop="logo">
           <!-- <template slot-scope="scope"> -->
           <el-image
@@ -218,17 +216,13 @@ export default {
     },
     //创建新企业
     handleAdd(data) {
-      // this.detail = JSON.parse(JSON.stringify(data));
-      // this.detailState = true;
       this.$router.push("/home/createEnterprise");
     },
     // 编辑新企业
     editItem(data) {
-      console.log("编辑新企业", data);
-      // this.$router.push(`/home/editEnterprise`);
       this.$router.push({
         path: "/home/editEnterprise",
-        query: { id: data.id }
+        query: data
       });
     },
     getList() {

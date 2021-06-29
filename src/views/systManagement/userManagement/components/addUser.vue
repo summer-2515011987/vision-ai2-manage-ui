@@ -16,18 +16,18 @@
     >
       <el-form-item
         label="账号:"
-        prop="account"
+        prop="nickName"
         :rules="[{ required: true, message: '请填写账号', trigger: 'change' }]"
       >
-        <el-input class="account" v-model="apForm.account" show-word-limit>
+        <el-input class="nickName" v-model="apForm.nickName" show-word-limit>
         </el-input>
       </el-form-item>
       <el-form-item
         label="姓名:"
-        prop="name"
+        prop="username"
         :rules="[{ required: true, message: '请填写姓名', trigger: 'change' }]"
       >
-        <el-input class="name" v-model="apForm.name" show-word-limit>
+        <el-input class="username" v-model="apForm.username" show-word-limit>
         </el-input>
       </el-form-item>
       <el-form-item
@@ -46,17 +46,17 @@
         <el-input class="password" v-model="apForm.password" show-word-limit>
         </el-input>
       </el-form-item>
-      <el-form-item label="备注:" prop="remarks">
+      <el-form-item label="备注:" prop="description">
         <el-input
           type="textarea"
-          class="remarks"
-          v-model="apForm.remarks"
+          class="description"
+          v-model="apForm.description"
           show-word-limit
         >
         </el-input>
       </el-form-item>
-      <el-form-item label="是否启用：" prop="status">
-        <el-radio-group v-model="apForm.status">
+      <el-form-item label="是否启用：" prop="active">
+        <el-radio-group v-model="apForm.active">
           <el-radio :label="1">是</el-radio>
           <el-radio :label="0">否</el-radio>
         </el-radio-group>
@@ -72,8 +72,7 @@
 </template>
 
 <script>
-// import { getRegionId } from "@/utils/auth";
-// import { addFire, editFire } from "@/api/fusionCloud/firewall";
+import { updateUser } from "@/api/systManagement/userManagement.js";
 export default {
   name: "testEdit",
   props: {
@@ -117,11 +116,12 @@ export default {
       if (this.detail.id) {
         //编辑
         this.apForm = this.detail;
+        // console.log("编辑apForm", this.apForm);
       } else {
         //创建
         this.apForm = {
-          name: "",
-          description: ""
+          // name: "",
+          // description: ""
         };
       }
     }
@@ -132,6 +132,36 @@ export default {
     submit() {
       this.$refs.ruleForm.validate(vaild => {
         if (!vaild) return false;
+        if (this.detail.id) {
+          // 编辑
+          this.listLoading = true;
+          updateUser(this.apForm.id, this.apForm)
+            .then(res => {
+              this.listLoading = false;
+              if (res.code == 200) {
+                this.$message.success(res.msg);
+                this.$emit("success");
+                this.$emit("cancel");
+              }
+            })
+            .catch(err => console.log(err));
+        } else {
+          // 新增
+          this.listLoading = true;
+          createUser(this.apForm)
+            .then(res => {
+              this.listLoading = false;
+              if (res.code == 200) {
+                console.log("当前新建的数据", res.data);
+                this.$message.success("添加成功");
+                this.$emit("success");
+                this.$emit("cancel");
+              }
+            })
+            .catch(err => {
+              console.log(err);
+            });
+        }
       });
     }
   }

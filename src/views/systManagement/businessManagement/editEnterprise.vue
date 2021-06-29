@@ -1,5 +1,5 @@
 <template>
-  <enterprise-detail :title="title"></enterprise-detail>
+  <enterprise-detail :is-edit="true" :title="title"></enterprise-detail>
 </template>
 
 <script>
