@@ -42,16 +42,16 @@ export default {
       type: Array,
       required: false,
       default: () => {}
+    },
+    detail: {
+      type: Object,
+      required: false,
+      default: () => {}
     }
   },
   data() {
     return {
-      roles: [
-        { value: "zs", label: "张三" },
-        { value: "ls", label: "李四" },
-        { value: "ww", label: "王五" },
-        { value: "zl", label: "赵六" }
-      ],
+      roles: [{ value: "zs", label: "张三" }],
       roleValue: "",
       listLoading: false,
       title: "",
@@ -87,18 +87,31 @@ export default {
     //     });
     // },
     submit() {
-      // this.$refs.ruleForm.validate(vaild => {
-      //   if (!vaild) return false;
-      //   console.log("this.roleValue", this.roleValue);
-      // });
-      console.log("this.roleValue", this.roleValue);
-      // if (this.roleValue.length > 0 && this.roleValue != null){
-      // }
-      // updateUserrole(this.roleValue)
-      //   .then(res => {
-      //     console.log("分配角色", res);
-      //   })
-      //   .catch(err => console.log(err));
+      this.$confirm("是否要确认?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(() => {
+        this.listLoading = true;
+        let params = {
+          adminId: this.detail.id,
+          roleIds: this.roleValue
+        };
+        updateUserrole(params)
+          .then(res => {
+            console.log("分配角色", res);
+            if (res.code == 200) {
+              this.$message({
+                message: "分配成功！",
+                type: "success"
+              });
+              this.listLoading = false;
+              this.$emit("success");
+              this.$emit("cancel");
+            }
+          })
+          .catch(err => console.log(err));
+      });
     }
   }
 };

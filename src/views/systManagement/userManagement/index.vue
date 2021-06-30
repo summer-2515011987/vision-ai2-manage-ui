@@ -43,8 +43,8 @@
         header-row-class-name="light_grey_table"
         :data="list"
         class="tableList"
-        style="width: 100%;flex:1; min-height: 300px"
         v-loading="listLoading"
+        height="300px"
         stripe
         border
       >
@@ -91,12 +91,10 @@
         </el-table-column>
         <el-table-column label="操作" width="400px" align="center">
           <template slot-scope="scope">
-            <el-button
-              size="mini"
-              @click="allocationQuota(scope.$index, scope.row)"
+            <el-button size="mini" @click="allocationQuota(scope.row)"
               >分配配额
             </el-button>
-            <el-button size="mini" @click="assignRoles(scope.$index, scope.row)"
+            <el-button size="mini" @click="assignRoles(scope.row)"
               >分配角色
             </el-button>
             <el-button size="mini" @click="handleAdd(scope.row)"
@@ -115,7 +113,7 @@
         @current-change="handleCurrentChange"
         layout="total, sizes,prev, pager, next,jumper"
         :current-page.sync="listQuery.pageNum"
-        :page-size="10"
+        :page-size="listQuery.pageSize"
         :page-sizes="[10, 15, 20]"
         :total="total"
       >
@@ -132,6 +130,8 @@
       :roleVisible="roleVisible"
       @cancel="roleVisible = false"
       :roleData="roleData"
+      :detail="detail"
+      @success="getList()"
     ></assignRoles>
     <!-- 分配配额 -->
     <allocationQuota
@@ -156,7 +156,7 @@ import allocationQuota from "./components/allocationQuota.vue";
 const defaultListQuery = {
   keyword: "",
   pageNum: 1,
-  pageSize: 5
+  pageSize: 10
 };
 export default {
   name: "userManagement",
@@ -200,7 +200,7 @@ export default {
         if (response.code == 200) {
           this.listLoading = false;
           this.list = response.data.content;
-          // this.total = response.data.total;
+          this.total = response.data.totalElements;
         }
       });
     },
@@ -240,7 +240,8 @@ export default {
       this.alloVisible = true;
     },
     // 分配角色
-    assignRoles() {
+    assignRoles(data) {
+      this.detail = JSON.parse(JSON.stringify(data));
       this.roleVisible = true;
       assignUserRoles()
         .then(res => {
@@ -304,13 +305,11 @@ export default {
         .catch(err => console.log(err));
     },
     handleSizeChange(val) {
-      console.log("handleSizeChange");
       this.listQuery.pageNum = 1;
       this.listQuery.pageSize = val;
       this.getList();
     },
     handleCurrentChange(val) {
-      console.log("handleCurrentChange");
       this.listQuery.pageNum = val;
       this.getList();
     }

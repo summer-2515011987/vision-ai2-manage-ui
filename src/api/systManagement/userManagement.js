@@ -57,9 +57,10 @@ export function assignUserRoles() {
     });
 }
 // 给用户分配角色（给用户分配角色
-export function updateUserrole(roleIds) {
+export function updateUserrole(data) {
     return request({
-        url: BASEPATH + "/userManager/role/update" + roleIds,
-        method: "post"
+        url: BASEPATH + "/userManager/role/update",
+        method: "post",
+        data: data
     });
 }

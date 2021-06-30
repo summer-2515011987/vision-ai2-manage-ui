@@ -95,8 +95,6 @@ export default {
   mounted() {},
   methods: {
     login() {
-      // this.$router.push("/home");
-      // console.log("this.$refs.ruleForm.validate", this.$refs.ruleForm.validate);
       this.$refs.ruleForm.validate(valid => {
         if (!valid) return false;
         this.loading = true;

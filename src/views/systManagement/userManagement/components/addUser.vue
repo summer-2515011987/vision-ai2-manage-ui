@@ -72,7 +72,7 @@
 </template>
 
 <script>
-import { updateUser } from "@/api/systManagement/userManagement.js";
+import { createUser } from "@/api/systManagement/userManagement.js";
 export default {
   name: "testEdit",
   props: {
@@ -152,7 +152,6 @@ export default {
             .then(res => {
               this.listLoading = false;
               if (res.code == 200) {
-                console.log("当前新建的数据", res.data);
                 this.$message.success("添加成功");
                 this.$emit("success");
                 this.$emit("cancel");
