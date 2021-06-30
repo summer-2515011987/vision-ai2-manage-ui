@@ -5,17 +5,17 @@
     width="30%"
     @close="$emit('cancel')"
   >
-    <el-select v-model="value" placeholder="请选择角色" clearable multiple>
+    <el-select v-model="roleValue" placeholder="请选择角色" clearable multiple>
       <el-option
-        v-for="item in roles"
-        :key="item.value"
-        :label="item.label"
-        :value="item.value"
+        v-for="item in roleData"
+        :key="item.id"
+        :label="item.name"
+        :value="item.id"
       >
-        <span style="float:left">{{ item.label }}</span>
-        <span style="float:right;color:#8492a6;font-size:14px">{{
-          item.value
-        }}</span>
+        <span style="float:left">{{ item.name }}</span>
+        <!-- <span style="float:right;color:#8492a6;font-size:14px">{{
+          item.id
+        }}</span> -->
       </el-option>
     </el-select>
 
@@ -29,15 +29,19 @@
 </template>
 
 <script>
-// import { getRegionId } from "@/utils/auth";
-// import { addFire, editFire } from "@/api/fusionCloud/firewall";
+import { updateUserrole } from "@/api/systManagement/userManagement.js";
 export default {
-  name: "testEdit",
+  name: "assignRoles",
   props: {
     roleVisible: {
       type: Boolean,
       required: false,
       default: false
+    },
+    roleData: {
+      type: Array,
+      required: false,
+      default: () => {}
     }
   },
   data() {
@@ -48,7 +52,7 @@ export default {
         { value: "ww", label: "王五" },
         { value: "zl", label: "赵六" }
       ],
-      value: "",
+      roleValue: "",
       listLoading: false,
       title: "",
       moduleSystemId: "",
@@ -69,12 +73,32 @@ export default {
     };
   },
   watch: {},
-  created() {},
+  created() {
+    // this.getAssignuser();
+  },
   methods: {
+    // getAssignuser() {
+    //   assignUserRoles()
+    //     .then(res => {
+    //       console.log("获取角色列表", res);
+    //     })
+    //     .catch(err => {
+    //       console.log(err);
+    //     });
+    // },
     submit() {
-      this.$refs.ruleForm.validate(vaild => {
-        if (!vaild) return false;
-      });
+      // this.$refs.ruleForm.validate(vaild => {
+      //   if (!vaild) return false;
+      //   console.log("this.roleValue", this.roleValue);
+      // });
+      console.log("this.roleValue", this.roleValue);
+      // if (this.roleValue.length > 0 && this.roleValue != null){
+      // }
+      // updateUserrole(this.roleValue)
+      //   .then(res => {
+      //     console.log("分配角色", res);
+      //   })
+      //   .catch(err => console.log(err));
     }
   }
 };

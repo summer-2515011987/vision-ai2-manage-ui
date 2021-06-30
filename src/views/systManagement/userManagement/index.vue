@@ -131,6 +131,7 @@
     <assignRoles
       :roleVisible="roleVisible"
       @cancel="roleVisible = false"
+      :roleData="roleData"
     ></assignRoles>
     <!-- 分配配额 -->
     <allocationQuota
@@ -146,7 +147,8 @@ import {
   getUserList,
   updateStatus,
   getUsername,
-  deleteUser
+  deleteUser,
+  assignUserRoles
 } from "@/api/systManagement/userManagement.js";
 import addUser from "./components/addUser.vue"; //添加用户
 import assignRoles from "./components/assignRoles.vue";
@@ -165,6 +167,7 @@ export default {
   },
   data() {
     return {
+      roleData: [],
       total: 10,
       detail: {},
       detailState: false, //添加用户
@@ -239,6 +242,16 @@ export default {
     // 分配角色
     assignRoles() {
       this.roleVisible = true;
+      assignUserRoles()
+        .then(res => {
+          if (res.code == 200) {
+            console.log("列表数据", res.data);
+            this.roleData = res.data;
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
     // 删除用户
     deleteItem(data) {

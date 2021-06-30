@@ -49,3 +49,17 @@ export function deleteUser(id, data) {
         data: data
     });
 }
+// 获取所有角色（用户分配角色时使用）
+export function assignUserRoles() {
+    return request({
+        url: BASEPATH + "/role/listAll",
+        method: "get"
+    });
+}
+// 给用户分配角色（给用户分配角色
+export function updateUserrole(roleIds) {
+    return request({
+        url: BASEPATH + "/userManager/role/update" + roleIds,
+        method: "post"
+    });
+}
