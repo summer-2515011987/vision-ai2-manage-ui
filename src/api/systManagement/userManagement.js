@@ -64,3 +64,11 @@ export function updateUserrole(data) {
         data: data
     });
 }
+// 分配配额
+export function allocationQuota(data) {
+    return request({
+        url: BASEPATH + "/userManager/createNodeAddCount",
+        method: "post",
+        data: data
+    });
+}

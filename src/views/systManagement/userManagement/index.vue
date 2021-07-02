@@ -91,9 +91,9 @@
         </el-table-column>
         <el-table-column label="操作" width="400px" align="center">
           <template slot-scope="scope">
-            <el-button size="mini" @click="allocationQuota(scope.row)"
+            <!-- <el-button size="mini" @click="allocationQuota(scope.row)"
               >分配配额
-            </el-button>
+            </el-button> -->
             <el-button size="mini" @click="assignRoles(scope.row)"
               >分配角色
             </el-button>
@@ -134,10 +134,12 @@
       @success="getList()"
     ></assignRoles>
     <!-- 分配配额 -->
-    <allocationQuota
+    <!-- <allocationQuota
       :alloVisible="alloVisible"
       @cancel="alloVisible = false"
-    ></allocationQuota>
+      :detail="detail"
+      @success="getList()"
+    ></allocationQuota> -->
   </div>
 </template>
 
@@ -152,7 +154,7 @@ import {
 } from "@/api/systManagement/userManagement.js";
 import addUser from "./components/addUser.vue"; //添加用户
 import assignRoles from "./components/assignRoles.vue";
-import allocationQuota from "./components/allocationQuota.vue";
+// import allocationQuota from "./components/allocationQuota.vue";
 const defaultListQuery = {
   keyword: "",
   pageNum: 1,
@@ -162,8 +164,8 @@ export default {
   name: "userManagement",
   components: {
     addUser,
-    assignRoles,
-    allocationQuota
+    assignRoles
+    // allocationQuota
   },
   data() {
     return {
@@ -236,9 +238,11 @@ export default {
         });
     },
     // 分配配额
-    allocationQuota() {
-      this.alloVisible = true;
-    },
+    // allocationQuota(data) {
+    //   console.log("分配配额111", data);
+    //   this.detail = JSON.parse(JSON.stringify(data));
+    //   this.alloVisible = true;
+    // },
     // 分配角色
     assignRoles(data) {
       this.detail = JSON.parse(JSON.stringify(data));

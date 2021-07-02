@@ -47,8 +47,7 @@
 </template>
 
 <script>
-// import { getRegionId } from "@/utils/auth";
-// import { addFire, editFire } from "@/api/fusionCloud/firewall";
+import { allocationQuota } from "@/api/systManagement/userManagement.js";
 export default {
   name: "allocationQuota",
   props: {
@@ -56,6 +55,11 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    detail: {
+      type: Object,
+      required: false,
+      default: () => {}
     }
   },
   data() {
@@ -85,6 +89,25 @@ export default {
     submit() {
       this.$refs.ruleForm.validate(vaild => {
         if (!vaild) return false;
+        console.log("this.detail分配配额", this.detail);
+        let params = {
+          adminId: this.detail.id,
+          appCount: this.detail.appCount,
+          nodeCount: this.detail.nodeCount
+        };
+        // return;
+        allocationQuota(params)
+          .then(res => {
+            console.log("分配配额", res);
+            if (res.code == 200) {
+              this.$message.success("分配成功");
+              this.$emit("success");
+              this.$emit("cancel");
+            }
+          })
+          .catch(err => {
+            console.log(err);
+          });
       });
     }
   }
